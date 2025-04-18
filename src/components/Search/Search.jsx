@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import css from './search.module.css';
+import css from './Search.module.css';
 
 function Search({ paramSearch, setSearchParams }) {
   const [search, setSearch] = useState('');
