@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import MovieList from '../../components/MovieList/MovieList';
-import Search from '../../components/Search/search';
 import css from './MoviesPage.module.css';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import * as api from '../../api';
 import { BarLoader } from 'react-spinners';
+import Search from '../../components/Search/Search';
 
 function MoviesPage() {
   const [movies, setMovies] = useState('');
