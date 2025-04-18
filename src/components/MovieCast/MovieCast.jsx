@@ -1,33 +1,17 @@
 import { BarLoader } from 'react-spinners';
 import * as api from '../../api';
 import css from './MovieCast.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import useAPI from '../../useAPI';
 
 function MovieCast() {
-  const [cast, setCast] = useState(null);
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [cast, isPending, isError, fetchCast] = useAPI(api.getMovieCredits, null)
   const { movieId } = useParams();
 
   useEffect(() => {
-    loadCast();
+    fetchCast(movieId);
   }, [movieId]);
-
-  async function loadCast() {
-    try {
-      setIsPending(true);
-      setIsError(false);
-
-      const cast = await api.getMovieCredits(movieId);
-
-      setCast(cast);
-    } catch (error) {
-      setIsError(true);
-    } finally {
-      setIsPending(false);
-    }
-  }
 
   if (isPending) return <BarLoader />;
 

@@ -1,33 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import css from './MovieReviews.module.css';
 import { useParams } from 'react-router-dom';
 import * as api from '../../api';
 import { BarLoader } from 'react-spinners';
+import useAPI from '../../useAPI';
 
 function MovieReviews() {
-  const [reviews, setReviews] = useState(null);
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [reviews, isPending, isError, fetchReviews] = useAPI(
+    api.getMovieReviews,
+    null
+  );
   const { movieId } = useParams();
 
   useEffect(() => {
-    loadReviews();
+    fetchReviews(movieId);
   }, [movieId]);
-
-  async function loadReviews() {
-    try {
-      setIsPending(true);
-      setIsError(false);
-
-      const reviews = await api.getMovieReviews(movieId);
-
-      setReviews(reviews);
-    } catch (error) {
-      setIsError(true);
-    } finally {
-      setIsPending(false);
-    }
-  }
 
   if (isPending) return <BarLoader />;
 

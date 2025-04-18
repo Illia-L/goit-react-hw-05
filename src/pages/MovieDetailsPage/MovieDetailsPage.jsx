@@ -1,39 +1,26 @@
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import css from './MovieDetailsPage.module.css';
-import { useEffect, useRef, useState } from 'react';
-import { getMovieDetails } from '../../api';
+import { useEffect, useRef } from 'react';
+import * as api from '../../api';
 import { BarLoader } from 'react-spinners';
+import useAPI from '../../useAPI';
 
 function MovieDetailsPage() {
-  const [movie, setMovie] = useState(null);
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [movie, isPending, isError, fetchMovie] = useAPI(
+    api.getMovieDetails,
+    null
+  );
   const { movieId } = useParams();
   const locationStateRef = useRef(null);
   const location = useLocation();
 
   useEffect(() => {
-    loadMovie();
+    fetchMovie(movieId);
   }, [movieId]);
 
   useEffect(() => {
     locationStateRef.current = location.state?.from || { pathname: '/movies' };
   }, []);
-
-  async function loadMovie() {
-    try {
-      setIsPending(true);
-      setIsError(false);
-
-      const movie = await getMovieDetails(movieId);
-
-      setMovie(movie);
-    } catch (error) {
-      setIsError(true);
-    } finally {
-      setIsPending(false);
-    }
-  }
 
   return (
     <>

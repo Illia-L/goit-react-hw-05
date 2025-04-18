@@ -1,34 +1,21 @@
 import { useEffect, useState } from 'react';
 import css from './HomePage.module.css';
-import { getTrendingMovies } from '../../api';
+import * as api from '../../api';
 import MovieList from '../../components/MovieList/MovieList';
 import { BarLoader } from 'react-spinners';
 import { useLocation } from 'react-router-dom';
+import useAPI from '../../useAPI';
 
 function HomePage() {
-  const [movies, setMovies] = useState([]);
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [movies, isPending, isError, fetchMovies] = useAPI(
+    api.getTrendingMovies,
+    []
+  );
   const location = useLocation()
 
   useEffect(() => {
-    loadTrendingMovies();
+    fetchMovies();
   }, []);
-
-  async function loadTrendingMovies() {
-    try {
-      setIsPending(true);
-      setIsError(false);
-
-      const movies = await getTrendingMovies();
-
-      setMovies(movies);
-    } catch (error) {
-      setIsError(true);
-    } finally {
-      setIsPending(false);
-    }
-  }
 
   return (
     <>
