@@ -1,0 +1,34 @@
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body,
+header,
+main,
+h1,
+h2,
+h3,
+p,
+form,
+input,
+label,
+button,
+link,
+image,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
